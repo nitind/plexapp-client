@@ -107,8 +107,8 @@ public class EpisodePosterImageGalleryAdapter extends AbstractPosterImageGallery
 				
 			}
 			
-			String episodeDetails = createVideoDetails(episode, epi);
-			epi.setCastInfo(episodeDetails);				
+	//		String episodeDetails = createVideoDetails(episode, epi);
+	//		epi.setCastInfo(episodeDetails);				
 		
 			posterList.add(epi);
 		}
@@ -130,6 +130,15 @@ public class EpisodePosterImageGalleryAdapter extends AbstractPosterImageGallery
 		imageManager.getLoader().load(mpiv);
 	
 		return mpiv;
+	}
+
+	/* (non-Javadoc)
+	 * @see com.github.kingargyle.plexappclient.ui.adapters.AbstractPosterImageGalleryAdapter#fetchDataFromService()
+	 */
+	@Override
+	protected void fetchDataFromService() {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

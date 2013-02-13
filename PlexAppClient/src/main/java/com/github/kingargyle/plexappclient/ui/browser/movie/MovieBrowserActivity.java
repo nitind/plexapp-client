@@ -110,6 +110,7 @@ public class MovieBrowserActivity extends Activity {
 		spinnerArrayAdapter.setDropDownViewResource(R.layout.serenity_spinner_textview_dropdown);
 		
 		categorySpinner =(Spinner) findViewById(R.id.movieCategoryFilter);
+		categorySpinner.setVisibility(View.INVISIBLE); // Hide this until posters have populated
 		categorySpinner.setAdapter(spinnerArrayAdapter);
 		categorySpinner.setOnItemSelectedListener(new CategorySpinnerOnItemSelectedListener("all", key));
 	}

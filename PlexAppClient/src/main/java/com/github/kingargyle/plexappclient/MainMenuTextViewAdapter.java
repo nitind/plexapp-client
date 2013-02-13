@@ -58,12 +58,15 @@ public class MainMenuTextViewAdapter extends BaseAdapter {
 	public MainMenuTextViewAdapter(Context c, View v) {
 		this.myContext = c;
 		menuItems = new ArrayList<MenuItem>();
+		fetchData();
+	}
+	
+	protected void fetchData() {
 		menuItemhandler = new MenuItemHandler();
 		Messenger messenger = new Messenger(menuItemhandler);
-		
-		Intent intent = new Intent(c, MainMenuIntentService.class);
+		Intent intent = new Intent(myContext, MainMenuIntentService.class);
 		intent.putExtra("MESSENGER", messenger);
-		c.startService(intent);
+		myContext.startService(intent);
 		notifyAdapter = this;
 	}
 	
