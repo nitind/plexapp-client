@@ -67,6 +67,8 @@
         
         <service android:name=".core.services.MainMenuIntentService"/>
         <service android:name=".core.services.MoviesRetrievalIntentService"/>
+        <service android:name=".core.services.EpisodeRetrievalIntentService"/>
+        <service android:name=".core.services.MovieCategoryRetrievalIntentService"/>
         
     </application>
 

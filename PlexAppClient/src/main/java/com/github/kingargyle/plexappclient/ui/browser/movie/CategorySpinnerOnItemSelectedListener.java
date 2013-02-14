@@ -61,22 +61,28 @@ public class CategorySpinnerOnItemSelectedListener implements OnItemSelectedList
 		selected = defaultSelection;
 		this.key = key;
 	}
+	
+	
 
 	public void onItemSelected(AdapterView<?> viewAdapter, View view, int position, long id) {
+		Activity c = (Activity)view.getContext();
+		CategoryInfo item = (CategoryInfo) viewAdapter.getItemAtPosition(position);
 		
-		// This is so we skip it during the onCreate event from the Activity;
 		if (firstSelection) {
+			View bgLayout = c.findViewById(R.id.movieBrowserBackgroundLayout);
+			Gallery posterGallery = (Gallery) c.findViewById(R.id.moviePosterGallery);
+			posterGallery.setAdapter(new MoviePosterImageGalleryAdapter(c, key, item.getCategory()));
+			posterGallery.setOnItemSelectedListener(new MoviePosterOnItemSelectedListener(bgLayout, c));
+			posterGallery.setOnItemClickListener(new MoviePosterOnItemClickListener());			
 			firstSelection = false;
 			return;
 		}
 		
-		CategoryInfo item = (CategoryInfo) viewAdapter.getItemAtPosition(position);
 		if (selected.equalsIgnoreCase(item.getCategory())) {
 			return;
 		}
 
 		selected = item.getCategory();		
-		Activity c = (Activity)view.getContext();
 		Spinner secondarySpinner = (Spinner) c.findViewById(R.id.movieCategoryFilter2);
 		
 		if (item.getLevel() == 0) {

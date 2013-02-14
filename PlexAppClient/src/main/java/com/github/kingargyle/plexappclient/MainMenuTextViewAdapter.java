@@ -28,6 +28,7 @@ import com.github.kingargyle.plexappclient.core.model.impl.MenuItem;
 import com.github.kingargyle.plexappclient.core.services.MainMenuIntentService;
 import com.github.kingargyle.plexappclient.ui.views.MainMenuTextView;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Handler;
@@ -49,6 +50,8 @@ public class MainMenuTextViewAdapter extends BaseAdapter {
 	private static MainMenuTextViewAdapter notifyAdapter;
 	
 	private static ArrayList<MenuItem> menuItems;
+	
+	private static ProgressDialog pd;
 
 	/** Simple Constructor saving the 'parent' context. */
 	public MainMenuTextViewAdapter(Context c) {
@@ -59,6 +62,7 @@ public class MainMenuTextViewAdapter extends BaseAdapter {
 		this.myContext = c;
 		menuItems = new ArrayList<MenuItem>();
 		fetchData();
+		pd = ProgressDialog.show(myContext, "Build Menus", "Loading Menus");
 	}
 	
 	protected void fetchData() {
@@ -150,6 +154,7 @@ public class MainMenuTextViewAdapter extends BaseAdapter {
 				menuItems = (ArrayList<MenuItem>) msg.obj;
 			}
 			notifyAdapter.notifyDataSetChanged();
+			pd.dismiss();
 		}
 		
 	}

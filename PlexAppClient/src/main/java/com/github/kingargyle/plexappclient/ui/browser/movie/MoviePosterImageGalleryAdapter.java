@@ -31,6 +31,7 @@ import com.github.kingargyle.plexappclient.core.services.MoviesRetrievalIntentSe
 import com.github.kingargyle.plexappclient.ui.adapters.AbstractPosterImageGalleryAdapter;
 import com.github.kingargyle.plexappclient.ui.views.SerenityPosterImageView;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Handler;
@@ -50,10 +51,13 @@ public class MoviePosterImageGalleryAdapter extends
 		AbstractPosterImageGalleryAdapter {
 
 	protected static MoviePosterImageGalleryAdapter notifyAdapter;
+	protected static ProgressDialog pd;
+	private Handler posterGalleryHandler;
 
 	public MoviePosterImageGalleryAdapter(Context c, String key, String category) {
 		super(c, key, category);
-		fetchDataFromService();
+		pd = ProgressDialog.show(c, "Movie Retrieval", "Retrieving Movies");
+		notifyAdapter = this;
 	}
 
 	public View getView(int position, View convertView, ViewGroup parent) {
@@ -75,32 +79,25 @@ public class MoviePosterImageGalleryAdapter extends
 		return mpiv;
 	}
 
-	@Override
 	protected void fetchDataFromService() {
-		handler = new MoviePosterHandler();
-		Messenger messenger = new Messenger(handler);
+		posterGalleryHandler = new MoviePosterHandler();
+		Messenger messenger = new Messenger(posterGalleryHandler);
 		Intent intent = new Intent(context, MoviesRetrievalIntentService.class);
 		intent.putExtra("MESSENGER", messenger);
 		intent.putExtra("key", key);
 		intent.putExtra("category", category);
-		
 		context.startService(intent);
-		notifyAdapter = this;
-
 	}
-
+	
 	private static class MoviePosterHandler extends Handler {
 
 		@Override
 		public void handleMessage(Message msg) {
 			posterList = (List<VideoContentInfo>) msg.obj;
+			Gallery posterGallery = (Gallery) context.findViewById(R.id.moviePosterGallery);
 			notifyAdapter.notifyDataSetChanged();
-			Gallery gallery = (Gallery) context.findViewById(R.id.moviePosterGallery);
-			gallery.requestFocus();
-			View catView = context.findViewById(R.id.movieCategoryFilter);
-			if (!catView.isShown()) {
-				catView.setVisibility(View.VISIBLE);
-			}
+			posterGallery.requestFocus();
+			pd.dismiss();
 		}
 
 	}
